@@ -1,0 +1,35 @@
+<app-header></app-header>
+
+
+<ion-content>
+  <ion-card class="ion-margin">
+    <ion-title class="ion-margin ion-text-center" color="secondary"><strong>Product detail</strong></ion-title>
+    <ion-img class="ion-margin" [src]="recipe?.imageUrl" style="height: 400px; object-fit: cover;"></ion-img>
+
+    <ion-card-header>
+      <ion-label color="dark">
+        <h1><b>{{recipe?.name}}</b></h1>
+      </ion-label>
+      <ion-label color="primary">
+        <h2><b>${{recipe?.price}}</b></h2>
+      </ion-label>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list >
+        <ion-item > Category: <strong class="ion-padding-start" >{{recipe?.category}}</strong> </ion-item>
+        <ion-item>Description: <strong class="ion-padding-start"> {{recipe?.description}}</strong> </ion-item>
+      </ion-list>
+      <ion-label >
+        <ion-button shape="round" >
+          <ion-icon name="cart-outline" slot="start"></ion-icon>Order Now</ion-button>
+          <ion-button (click)="addToWishlist(recipe)" color="dark" fill="clear">
+            <ion-icon name="heart-outline"></ion-icon>
+           <strong><ion-text> Add to wishlist</ion-text></strong></ion-button>
+           <ion-button color="secondary"  fill="clear" routerLink="/home" > 
+          <ion-icon name="arrow-back-circle" slot="start"></ion-icon><b>Back to home</b></ion-button>
+      </ion-label>
+    </ion-card-content>
+  </ion-card>
+  <app-footer></app-footer>
+</ion-content>

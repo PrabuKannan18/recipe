@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-img src="assets/imgs/recipe.jpg" style="width: 150px; height: 70px; object-fit: cover; margin: auto;"></ion-img>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title color="secondary" class="ion-text-center"><strong>Add recipe</strong></ion-card-title>
+      <ion-card-subtitle class="ion-text-center">Fill in the details below</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <form [formGroup]="recipeForm" (ngSubmit)="addRecipe()">
+        <ion-list lines="full" inset="true">
+          <ion-item>
+            <ion-label position="stacked">Name: </ion-label>
+            <ion-input formControlName="name" placeholder="Enter the name" required></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Price:</ion-label>
+            <ion-input formControlName="price" type="number" placeholder="Enter the price" required></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Description:</ion-label>
+            <ion-textarea formControlName="description" auto-grow="true" placeholder="Enter the description" required></ion-textarea>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Category:</ion-label>
+            <ion-select formControlName="category" placeholder="Select category" required>
+              <ion-select-option value="Starters">Starters</ion-select-option>
+              <ion-select-option value="Main Course">Main Course</ion-select-option>
+              <ion-select-option value="Ice-cream">Juice</ion-select-option>
+              <ion-select-option value="Desserts">Desserts</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Image url:</ion-label>
+            <ion-input formControlName="imageUrl" type="url" placeholder="Enter the image url" required></ion-input>
+          </ion-item>
+        </ion-list>
+
+        <div class="ion-padding ion-text-center">
+          <ion-button expand="block" color="primary" type="submit">Add recipe</ion-button>
+          <ion-button class="ion-padding-top" expand="block" color="secondary" (click)="logout()">Log out</ion-button>
+        </div>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

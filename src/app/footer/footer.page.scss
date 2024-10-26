@@ -1,0 +1,14 @@
+.custom-footer {
+    background-color: rgb(245, 245, 245); /* Light grey background */
+    position: fixed;            /* Fixed position */
+    bottom: 0;                  /* Stick to the bottom */
+    width: 100%;                /* Full width */
+    z-index: 10;                /* Ensure it stays on top */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Shadow for separation */
+  }
+  
+  ion-content {
+    padding-bottom: 80px; /* Adjust padding to ensure footer is not overlapping content */
+  }
+  
+  
