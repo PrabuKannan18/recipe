@@ -37,10 +37,10 @@ export class CheckoutPage implements OnInit {
       this.user.cvv = '';
     }
   }
-  async showSuccessAlert() {
+  async showSuccessAlert(header:string,message:string) {
     const alert = await this.alertController.create({
-      header: 'Payment Successful!',
-      message: `Thank you for your purchase. Your order will be delivered soon.`,
+      header: header,
+      message: message,
       buttons: ['OK'],
     });
 
@@ -50,7 +50,7 @@ export class CheckoutPage implements OnInit {
   payNow() {
   
     if (!this.user.name || !this.user.phone || !this.user.address || !this.user.paymentmethod) {
-      alert('Please fill all the required fields.');
+   this.showSuccessAlert('Incomplete','Please fill all the required fields.');
       return; 
     }
   
@@ -58,10 +58,14 @@ export class CheckoutPage implements OnInit {
       this.user.paymentmethod === 'card' &&
       (!this.user.cardnumber || !this.user.expiry || !this.user.cvv)
     ) {
-      alert('Please complete your card details.');
+       this.showSuccessAlert('Incomplete','Please complete your card details.');
       return; 
     }
-    this.showSuccessAlert();
+    this.showSuccessAlert('Payment Successful!', 'Thank you for your purchase. Your order will be delivered soon.');
+    this.user.name = '';
+    this.user.address = '';
+    this.user.phone = '';
+    this.user.paymentmethod='';
     this.cartService.clearCart();
 
   }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonCardSubtitle, IonImg, IonCard, IonCardHeader, IonLabel, IonCardContent, IonItem, IonRow, IonCol, IonButton, IonIcon, IonBackButton, IonButtons, IonList, IonText } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonCardSubtitle, IonImg, IonCard,AlertController, IonCardHeader, IonLabel, IonCardContent, IonItem, IonRow, IonCol, IonButton, IonIcon, IonBackButton, IonButtons, IonList, IonText } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { cartOutline, heartOutline, arrowBackCircle } from 'ionicons/icons';
 import { HomePage } from '../home/home.page';
@@ -28,7 +28,8 @@ export class ProductDetailsPage implements OnInit {
     private router:Router,
     private auth:AuthService,
     private route:ActivatedRoute,
-    private recipeService:RecipeService
+    private recipeService:RecipeService,
+    private alertController:AlertController,
     
   ) { addIcons({cartOutline,heartOutline,arrowBackCircle});}
 
@@ -45,10 +46,19 @@ export class ProductDetailsPage implements OnInit {
     if (!wishlist.some((item: { id: any; }) => item.id === recipe.id)) {
       wishlist.push(recipe);
       localStorage.setItem('wishlist', JSON.stringify(wishlist));
-      alert('Added to wishlist!');
+      this.showalert('Added to wishlist!');
     } else {
-      alert('Item already in wishlist!');
+      this.showalert('Item already in wishlist!');
     }
   }
+
+ async showalert(header:string){
+    const alert= await this.alertController.create({
+      header:header,
+      buttons:['Ok']
+    })
+      await alert.present();
+  }
+
 
 }

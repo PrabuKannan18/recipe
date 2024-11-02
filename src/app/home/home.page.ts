@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
-import { IonHeader, IonicSlides,IonToolbar, IonTitle, IonContent, IonButtons, IonButton, IonIcon, IonImg } from '@ionic/angular/standalone';
+import { IonHeader, IonicSlides,IonToolbar,AlertController, IonTitle, IonContent, IonButtons, IonButton, IonIcon, IonImg } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { menu, search, wallet, restaurant, car, checkmarkCircle, cart, starOutline, restaurantOutline, medkitOutline, timeOutline, location, call, mail, logoFacebook, logoTwitter, logoInstagram, logoYoutube, bagOutline, menuOutline, heartOutline, cartOutline, personOutline, shareOutline, shareSocialOutline, share, shareSocial, addOutline, removeOutline } from 'ionicons/icons';
 import { register } from 'swiper/element/bundle';
@@ -26,7 +26,9 @@ export class HomePage implements OnInit {
   constructor(private recipeService:RecipeService,
     private router:Router,
     private wishlistService: WishlistService,
-    private cartService: CartService, private authService: AuthService
+    private cartService: CartService,
+     private authService: AuthService,
+     private alertController:AlertController,
   )  {addIcons({addOutline,removeOutline,starOutline,timeOutline,medkitOutline,wallet,restaurant,car,checkmarkCircle,heartOutline,shareOutline,menu,search,location,call,mail,logoFacebook,logoTwitter,logoInstagram,logoYoutube,bagOutline,menuOutline,cartOutline,personOutline,restaurantOutline,cart,shareSocial});}
 
   images = [
@@ -64,10 +66,10 @@ export class HomePage implements OnInit {
     const exists = wishlist.some(item => item.id === recipe.id);
     
     if (exists) {
-      alert(`${recipe.name} is already in your wishlist`);
+      this.showalert(`${recipe.name} is already in your wishlist`);
     } else {
       this.wishlistService.add(recipe);
-      alert(`${recipe.name} added to wishlist`);
+      this.showalert(`${recipe.name} added to wishlist`);
     }
   }
 
@@ -77,48 +79,24 @@ export class HomePage implements OnInit {
       id: recipe.id,
       name: recipe.name,
       price: recipe.price,
-      quantity: 1, // Default quantity
+      quantity: 1, 
       image: recipe.imageUrl
     };
 
-    // Call the cart service to add the recipe to the cart
     this.cartService.addToCart(cartItem);
     
-    // Optional: Display confirmation message
-    alert(`${recipe.name} has been added to your cart!`);
+    
+    this.showalert(`${recipe.name} has been added to your cart!`);
+  }
+
+  async showalert(header:string){
+    const alert = await this.alertController.create({
+      header:header,
+      buttons:['Ok']
+    })
+    await alert.present();
+
   }
 
   
-
-  // dishes = [
-  //   {
-  //     name: 'Paneer Tikka',
-  //     category: 'Starters',
-  //     description: 'Flavor Starters',
-  //     price: 299,
-  //     image: 'assets/imgs/Paneer-Tikka-2.jpg'
-  //   },
-  //   {
-  //     name: 'Chicken Biryani',
-  //     category: 'Main Course',
-  //     description: 'Satisfying Mains',
-  //     price: 299,
-  //     image: 'assets/imgs/chicken biriyani.jpg'
-  //   },
-  //   {
-  //     name:'orange',
-  //     category:'Juice',
-  //     description:'Fruity Bliss',
-  //     price:'100',
-  //     image:'assets/imgs/orange.jpg'
-  //   },
-  //   {
-  //     name:'vanilla',
-  //     category:'Ice cream',
-  //     description:'Chilly Treat',
-  //     price:'100',
-  //     image:'assets/imgs/vanilla.jpg'
-  //   },
-  // ];
-
 }

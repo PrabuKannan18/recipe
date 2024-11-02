@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonGrid, IonRow, IonCol, IonItem, IonList, IonInput, IonSelect, IonSelectOption, IonLabel, IonButton, IonTextarea, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonIcon, IonButtons, IonImg } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard,AlertController, IonGrid, IonRow, IonCol, IonItem, IonList, IonInput, IonSelect, IonSelectOption, IonLabel, IonButton, IonTextarea, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonIcon, IonButtons, IonImg } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { personOutline, search, menu } from 'ionicons/icons';
 import { RecipeService } from '../_services/recipe.service';
@@ -21,7 +21,8 @@ export class AdminPage implements OnInit {
   constructor(
     private recipeService: RecipeService,
     private fb: FormBuilder,
-    private auth:AuthService
+    private auth:AuthService,
+    private alertController:AlertController,
   ) {
     addIcons({ menu, search, personOutline });
 
@@ -39,18 +40,27 @@ export class AdminPage implements OnInit {
   addRecipe() {
     if (this.recipeForm.valid) {
       this.recipeService.addRecipe(this.recipeForm.value).then(() => {
-        alert('Recipe added successfully!');
+        this.showalert('Recipe added successfully!');
         this.recipeForm.reset();
       }).catch(error => {
         console.error('Error adding recipe: ', error);
       });
     } else {
-      alert('Please fill out the form correctly.');
+      this.showalert('Please fill out the form correctly.');
     }
   }
 
   logout(){
     this.auth.logout();
+  }
+
+  async showalert(header:string){
+    const alert = await this.alertController.create({
+      header:header,
+      buttons:['Ok']
+    })
+    await alert.present();
+
   }
   
 }

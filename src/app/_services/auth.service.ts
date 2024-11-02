@@ -3,6 +3,8 @@ import { Auth, onAuthStateChanged, user } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut, User } from 'firebase/auth';
 import { CartService } from './cart.service';
+import { AlertController } from '@ionic/angular/standalone';
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,11 +12,14 @@ import { CartService } from './cart.service';
 export class AuthService {
 
   currentUserEmail: string | null = null;
+  isLoading:boolean=false;
+  
 
   constructor(
     private auth: Auth,
     private router: Router,
-    private cartService:CartService
+    private cartService:CartService,
+    private alertController:AlertController,
   ) {
     onAuthStateChanged(this.auth, (user: User | null) => {
       this.currentUserEmail = user?.email || null;
@@ -31,8 +36,10 @@ export class AuthService {
   signup(email: string, password: string) {
     return createUserWithEmailAndPassword(this.auth, email, password)
       .then(res => {
-        alert('Welcome')
+      
+      this.showalert('Welcome')
         this.router.navigate(['/home']);
+
       })
       .catch(error => {
         console.error('Error during sign up:', error);
@@ -43,23 +50,25 @@ export class AuthService {
     return signInWithEmailAndPassword(this.auth, email, password)
       .then((res) => {
         if (email === 'admin@gmail.com') { 
-          alert('Welcome Admin!');
-          this.router.navigate(['/admin']); 
+          this.isLoading=true;
+          this.showalert('Welcome Admin!');
+          this.router.navigate(['/admin']);   
         } else {
-          alert('Login successful!');
+          this.isLoading=true;
+          this.showalert('Login successful!')
           this.router.navigate(['/home']); 
         }
         
       })
       .catch(error => {
-          alert(' Please create an account to log in.');
+        this.showalert(' Please create an account to log in.');
       });
   }
 
   resetpassword(email: string) {
     return sendPasswordResetEmail(this.auth, email)
       .then(() => {
-        alert('Reset password email sent')
+        this.showalert('Reset password email sent')
       })
       .catch(error => console.log('Error sending reset password email:', error));
   }
@@ -72,7 +81,7 @@ export class AuthService {
         localStorage.removeItem('wishlist');
       }
       this.currentUserEmail = null;
-      alert('Logged out successfully');
+      this.showalert('Logged out successfully');
       this.router.navigate(['/login']);
     });
   }
@@ -84,4 +93,13 @@ export class AuthService {
             this.router.navigate(['']);
         })
 }
+
+ async showalert(header:string){
+    const alert = await this.alertController.create({
+      header: header,
+      buttons:['Ok']
+    })
+    await alert.present();
+  }
 }
+
